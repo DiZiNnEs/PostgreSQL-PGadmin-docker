@@ -1,22 +1,31 @@
 version: "3.8"
 
 services:
-    db:
-        container_name: postgresql
-        image: postgres:latest
-        restart: always
-        environment:
-            - POSTGRES_DB=database
-            - POSTGRES_USER=dizinnes
-            - POSTGRES_PASSWORD=dizinnes
-        ports:
-            - "5444:5444"
-    pgadmin:
-        container_name: pg_admin4
-        image: dpage/pgadmin4:latest
-        restart: always
-        environment:
-            PGADMIN_DEFAULT_EMAIL: dizinnes228@gmail.com
-            PGADMIN_DEFAULT_PASSWORD: root
-        ports:
-            - "5050:80"
+  db:
+    container_name: postgresql
+    image: postgres:latest
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/
+    restart: always
+    environment:
+      - POSTGRES_DB=database
+      - POSTGRES_USER=dizinnes
+      - POSTGRES_PASSWORD=dizinnes
+      - PGDATA=/var/lib/pgadmin
+    ports:
+      - "5444:5444"
+  pgadmin:
+    container_name: pg_admin4
+    image: dpage/pgadmin4:latest
+    restart: always
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: dizinnes228@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
+
+volumes:
+  postgres-data:
+  pgadmin:
